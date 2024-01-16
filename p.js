@@ -1,3 +1,3 @@
-const a = require('./lib/downloader.js')
+const a = require('./lib/Ai.js')
 
-a.tiktok('story').then(_ => console.log(_))
+a.geminiAi('hai').then(_ => console.log(_))

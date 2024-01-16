@@ -34,13 +34,36 @@ router.get('/aoi', async (req, res) => {
 router.get('/botika', async (req, res) => {
   let text = req.query.text
   let apikey = req.query.apikey
-  if (!text) return res.json(global.status.query)
+  if (!text) return res.json(global.status.text)
     if (!apikey) return res.json(global.status.apikey)
   if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
   let result = await ai.botika(text)
   res.header('Content-Type: application/json')
   res.type('json').send(JSON.stringify(result, null, 2))
 })
+
+router.get('/palm', async (req, res) => {
+  let text = req.query.text
+  let apikey = req.query.apikey
+  if (!text) return res.json(global.status.text)
+    if (!apikey) return res.json(global.status.apikey)
+  if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
+  let result = await ai.palm(text)
+  res.header('Content-Type: application/json')
+  res.type('json').send(JSON.stringify(result, null, 2))
+})
+
+router.get('/geminiAi', async (req, res) => {
+  let text = req.query.text
+  let apikey = req.query.apikey
+  if (!text) return res.json(global.status.text)
+    if (!apikey) return res.json(global.status.apikey)
+  if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
+  let result = await ai.geminiAi(text)
+  res.header('Content-Type: application/json')
+  res.type('json').send(JSON.stringify(result, null, 2))
+})
+
 
 router.get('/blackbox', async (req, res) => {
   let text = req.query.text
