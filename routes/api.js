@@ -1,6 +1,6 @@
 __path = process.cwd()
 
-let express = require('express'), router = express.Router(), yt = require('../lib/yt'), ytdl = require('../lib/ytdl'), ai = require('../lib/Ai'), buffer = require('../lib/function'), fs = require('fs'), spot = require('../lib/downloader'), { toAudio } = require('../lib/converter')
+let express = require('express'), router = express.Router(), yt = require('../lib/yt'), ytdl = require('../lib/ytdl'), ai = require('../lib/Ai'), buffer = require('../lib/function'), fs = require('fs'), dl = require('../lib/downloader'), { toAudio } = require('../lib/converter')
 
 router.get('/remini', async (req, res) => {
   let link = req.query.link
@@ -45,7 +45,7 @@ router.get('/botika', async (req, res) => {
 router.get('/blackbox', async (req, res) => {
   let text = req.query.text
   let apikey = req.query.apikey
-  if (!text) return res.json(global.status.query)
+  if (!text) return res.json(global.status.text)
     if (!apikey) return res.json(global.status.apikey)
   if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
   let result = await ai.blackbox(text)
@@ -64,7 +64,7 @@ router.get('/spotify/search', async (req, res) => {
   if (!q) return res.json(global.status.query)
   if (!apikey) return res.json(global.status.apikey)
   if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
-  let result = await spot.searching(q)
+  let result = await dl.searching(q)
   res.header('Content-Type: application/json')
   res.type('json').send(JSON.stringify(result, null, 2))
 })
@@ -75,7 +75,7 @@ router.get('/spotify/dl', async (req, res) => {
   if (!link) return res.json(global.status.link)
   if (!apikey) return res.json(global.status.apikey)
   if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
-  let result = await spot.spotifydl(link)
+  let result = await dl.spotifydl(link)
   res.header('Content-Type: application/json')
   res.type('json').send(JSON.stringify(result, null, 2))
 })
@@ -99,6 +99,17 @@ router.get('/yta', async (req, res) => {
   if (!apikey) return res.json(global.status.apikey)
   if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
   let result = await ytdl.ytmp3(url)
+  res.header('Content-Type: application/json')
+  res.type('json').send(JSON.stringify(result, null, 2))
+})
+
+router.get('/tiktok-search', async (req, res) => {
+  let query = req.query.q
+  let apikey = req.query.apikey
+  if (!query) return res.json(global.status.query)
+   if (!apikey) return res.json(global.status.apikey)
+  if (!global.apikey.includes(apikey)) return res.json(global.status.invalidKey)
+  let result = await dl.tiktokS(query)
   res.header('Content-Type: application/json')
   res.type('json').send(JSON.stringify(result, null, 2))
 })
